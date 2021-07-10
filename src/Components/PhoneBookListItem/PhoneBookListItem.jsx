@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 function PhoneBookListItem({ id, name, number, onDeleteContact }) {
   return (
     <li key={id}>
@@ -9,5 +10,12 @@ function PhoneBookListItem({ id, name, number, onDeleteContact }) {
     </li>
   );
 }
+
+PhoneBookListItem.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  onDeleteContact: PropTypes.func.isRequired,
+};
 
 export default PhoneBookListItem;

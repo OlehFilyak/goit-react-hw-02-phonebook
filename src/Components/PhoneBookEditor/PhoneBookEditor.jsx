@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 function PhoneBookEditor({
   handleAddNewContact,
   handleChangeInput,
@@ -46,5 +47,12 @@ function PhoneBookEditor({
     </div>
   );
 }
+
+PhoneBookEditor.propTypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  handleChangeInput: PropTypes.func.isRequired,
+  handleAddNewContact: PropTypes.func.isRequired,
+};
 
 export default PhoneBookEditor;
