@@ -1,7 +1,7 @@
 function Filter({ onChange, filterValue }) {
   return (
     <label>
-      Знайди потрібний контакт
+      Find Contact
       <input
         type="text"
         onChange={onChange}
