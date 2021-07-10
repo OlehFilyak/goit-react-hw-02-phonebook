@@ -3,7 +3,8 @@ import { nanoid } from "nanoid";
 import Section from "./Components/Section/Section";
 import PhoneBookList from "./Components/PhoneBookList/PhoneBookList";
 import PhoneBookEditor from "./Components/PhoneBookEditor/PhoneBookEditor";
-import SearchContactInput from "./Components/SearchContactInput/SearchContactInput";
+import Filter from "./Components/Filter/Filter";
+import filterContacts from "./helpers/filtersContacts";
 import "./App.css";
 
 class App extends React.Component {
@@ -14,50 +15,67 @@ class App extends React.Component {
       { id: "id-3", name: "Eden Clements", number: "645-17-79" },
       { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
     ],
-    filter: "",
     name: "",
     number: "",
+    filter: "",
   };
-  handleRecordNameToStateName = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleChangeInput = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   };
 
   handleAddNewContact = (e) => {
     e.preventDefault();
+
+    if (this.state.contacts.some((el) => el.name === this.state.name)) {
+      alert(`${this.state.name} has alredy be declared`);
+      return;
+    }
     let contact = {
       name: this.state.name,
       number: this.state.number,
       id: nanoid(),
     };
+
     this.setState((prevState) => ({
       contacts: [...prevState.contacts, contact],
+      name: "",
+      number: "",
     }));
-    console.log(contact);
-    console.log(this.state.contacts);
   };
 
   onDeleteContact = (e) => {
     this.setState({
       contacts: this.state.contacts.filter((el) => el.id !== e.target.id),
     });
-    console.log();
   };
 
-  onSearchContact = (e) => {};
+  handleChangeFilter = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
 
   render() {
+    const contacts = filterContacts(this.state.contacts, this.state.filter);
     return (
       <div className="App">
         <Section title={"Phonebook"}>
           <PhoneBookEditor
+            name={this.state.name}
+            number={this.state.number}
             handleAddNewContact={this.handleAddNewContact}
-            handleRecordNameToStateName={this.handleRecordNameToStateName}
+            handleChangeInput={this.handleChangeInput}
           />
         </Section>
-        <Section title={"Add contact"}>
-          <SearchContactInput />
+        <Section title={"Contacts"}>
+          <Filter
+            onChange={this.handleChangeFilter}
+            filterValue={this.state.filter}
+          />
           <PhoneBookList
-            contacts={this.state.contacts}
+            contacts={contacts}
             onDeleteContact={this.onDeleteContact}
           />
         </Section>
